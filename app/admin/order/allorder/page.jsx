@@ -43,7 +43,7 @@ export default function OrdersPage() {
   }, []);
 
   return (
-    <div className="mt-24 px-4 ">
+    <div className=" px-4 ">
       <h1 className="text-xl font-semibold mb-5 ">All Orders</h1>
 
       {orders.map((order) => (
