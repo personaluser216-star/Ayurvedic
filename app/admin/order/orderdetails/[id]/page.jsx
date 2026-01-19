@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const statusColors = {
   placed: "bg-yellow-100 text-yellow-800",
@@ -19,6 +20,7 @@ const OrderDetailsPage = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState("");
+   const router = useRouter();
 
   const fetchOrder = async () => {
     try {
@@ -97,7 +99,7 @@ const OrderDetailsPage = () => {
       </div>
 
       {/* Payment Info Card */}
-      <div className="mb-6 rounded-lg shadow-inner">
+      <div className="mb-6 rounded-lg">
         <h2 className="text-lg font-semibold mb-4">Payment Info</h2>
         <div className="grid grid-cols-2 md:grid-cols-4  border p-2 border-gray-300">
           <div>
@@ -123,7 +125,7 @@ const OrderDetailsPage = () => {
       <div className="mb-6">
         <h2 className="text-lg font-semibold mb-2">Items</h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse text-sm">
+          <table className="w-96 border-collapse text-sm">
             <thead>
               <tr className="bg-gray-100">
                 <th className="px-4 py-2 text-left">Product</th>
@@ -149,8 +151,16 @@ const OrderDetailsPage = () => {
               </tr>
             </tfoot>
           </table>
-          <button className="bg-black text-white p-2 rounded mt-5 w-36">Bill generate</button>
-        </div>
+ <button
+  className="bg-black text-white p-2 rounded mt-5 w-36"
+  onClick={() => {
+    sessionStorage.setItem("billOrder", JSON.stringify(order));
+    router.push(`/admin/billprint/${id}`);
+  }}
+>
+  Bill Generate
+</button>
+     </div>
       </div>
     </div>
   );
