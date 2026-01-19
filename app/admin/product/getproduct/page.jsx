@@ -5,6 +5,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { IconButton } from "@mui/material";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { FaRegEye } from "react-icons/fa";
+
 
 const GetProduct = () => {
   const [products, setProducts] = useState([]);
@@ -104,6 +106,15 @@ const GetProduct = () => {
             onClick={() => handleDelete(params.row.id)}
           >
             <FaTrash className="text-lg" />
+          </IconButton>
+          
+          <IconButton
+            
+             onClick={() =>
+              router.push(`/admin/product/productdetails/${params.row.id}`)
+            }
+          >
+            <FaRegEye  className="text-lg text-black" />
           </IconButton>
         </>
       ),

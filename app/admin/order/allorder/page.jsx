@@ -2,10 +2,15 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { DataGrid } from "@mui/x-data-grid";
+import { Box } from "@mui/material";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const fetchOrders = async () => {
     try {
@@ -18,23 +23,8 @@ export default function OrdersPage() {
       }
     } catch (error) {
       toast.error("Failed to load orders");
-    }
-  };
-
-  // 🔹 UPDATE STATUS
-  const updateStatus = async (orderId, status) => {
-    try {
-      const res = await axios.put(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/order/${orderId}`,
-        { orderStatus: status }
-      );
-
-      if (res.data.success) {
-        toast.success("Status updated");
-        fetchOrders();
-      }
-    } catch (error) {
-      toast.error("Status update failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,76 +32,108 @@ export default function OrdersPage() {
     fetchOrders();
   }, []);
 
-  return (
-    <div className=" px-4 ">
-      <h1 className="text-xl font-semibold mb-5 ">All Orders</h1>
+  const columns = [
+    {
+      field: "id",
+      headerName: "Order ID",
+      width: 230,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      width:130,
+    },
+    {
+      field: "phone",
+      headerName: "Phone",
+      width: 150,
+    },
+    {
+      field: "paymentMethod",
+      headerName: "Payment Method",
+      width: 150,
+    },
+   {
+  field: "paymentStatus",
+  headerName: "Payment Status",
+  width: 150,
+  renderCell: (params) => {
+    const status = params.value;
 
-      {orders.map((order) => (
-        <div
-          key={order._id}
-          className="
-           bg-white rounded-lg
-            flex justify-between
-            gap-4 border border-gray-200
-            rounded p-4 mb-4 text-md
-          "
+    return (
+      <span
+        className={`px-2 py-1 rounded text-sm font-medium
+          ${
+            status === "paid"
+              ? "bg-green-100 text-green-700"
+              : "bg-yellow-100 text-yellow-700"
+          }`}
+      >
+        {status}
+      </span>
+    );
+  },
+},
+
+    {
+      field: "total",
+      headerName: "Total Amount",
+      width: 120,
+    },
+    {
+      field: "orderStatus",
+      headerName: "Order Status",
+      width: 130,
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 100,
+      sortable: false,
+      renderCell: (params) => (
+        <button
+          onClick={() =>
+            router.push(`/admin/order/orderdetails/${params.row.fullId}`)
+          }
+          className="text-blue-600 font-semibold  hover:underline"
         >
-          {/* CUSTOMER */}
-          <div className="p-2">
-            <p className="font-semibold">
-             {order.customer.firstName} {order.customer.lastName}
-            </p>
-            <p>{order.customer.phone}</p>
-            <p className="text-gray-600">
-              {order.customer.address}, {order.customer.city}
-            </p>
-          </div>
+          View Order
+        </button>
+      ),
+    },
+  ];
 
-          {/* ITEMS */}
-          <div>
-            <p className="font-bold mb-1">Items</p>
-            {order.items.map((item, i) => (
-              <p key={i}>
-                {item.name} × {item.quantity}
-              </p>
-            ))}
-          </div>
+  const rows = orders.map((order) => ({
+    id: order._id, // grid display id
+    fullId: order._id,       // real id for navigation
+    name: `${order.customer.firstName} ${order.customer.lastName}`,
+    phone: order.customer.phone,
+    paymentMethod: order.paymentMethod.toUpperCase(),
+    paymentStatus: order.paymentStatus,
+    total: `₹${order.totalAmount}`,
+    orderStatus: order.orderStatus.replaceAll("_", " "),
+  }));
 
-          {/* PAYMENT */}
-          <div>
-            <p className="font-bold mb-1">Payment</p>
-            <p>Method: {order.paymentMethod.toUpperCase()}</p>
-            <p>Status: {order.paymentStatus}</p>
-          </div>
+  return (
+    <div className="px-4">
+      <h1 className="text-xl font-semibold mb-4">
+      All Orders
+      </h1>
 
-          {/* TOTAL */}
-          <div>
-            <p className="font-bold mb-1">Amount</p>
-            <p>₹{order.totalAmount}</p>
-          </div>
-
-          {/* STATUS UPDATE */}
-          <div>
-            <p className="font-bold mb-1">Order Status</p>
-            <select
-              value={order.orderStatus}
-              onChange={(e) =>
-                updateStatus(order._id, e.target.value)
-              }
-              className="border px-2 py-1 rounded w-full"
-            >
-              <option value="placed">Order Placed</option>
-              <option value="packing">Packing</option>
-              <option value="shipped">Shipped</option>
-              <option value="out_for_delivery">
-                Out for Delivery
-              </option>
-              <option value="delivered">Delivered</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </div>
-        </div>
-      ))}
+      <Box sx={{ width: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          loading={loading}
+          pageSizeOptions={[5, 10, 20]}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 10, page: 0 },
+            },
+          }}
+          disableRowSelectionOnClick
+        />
+      </Box>
     </div>
   );
 }

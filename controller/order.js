@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import Order from "@/models/order"
 import { connectDB } from "@/lib/mongodb";
 import order from "@/models/order";
+import mongoose from "mongoose";
 
 export const createOrder = async (req) => {
   try {
@@ -70,3 +71,37 @@ export const getOrder = async()=> {
     );
   }
 };
+export async function getOrderById(id) {
+  try {
+    await connectDB();
+
+    // ✅ validate id
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid order id" },
+        { status: 400 }
+      );
+    }
+
+    const product = await order.findById(id);
+
+    if (!product) {
+      return NextResponse.json(
+        { success: false, message: "Product not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { success: true, data: product },
+      { status: 200 }
+    );
+    } catch (error) {
+    console.error("GET order ERROR:", error);
+
+    return NextResponse.json(
+      { success: false, message: "Failed to fetch order" },
+      { status: 500 }
+    );
+  }
+}
