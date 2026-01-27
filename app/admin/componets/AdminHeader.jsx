@@ -1,10 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { CgMenuLeftAlt } from "react-icons/cg";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 
 export default function AdminHeader({ sidebarOpen, setSidebarOpen }) {
+
+  const router = useRouter();
   return (
     <header className="h-16 bg-white border-b border-gray-300 px-4 flex items-center justify-between">
       
@@ -30,7 +33,9 @@ export default function AdminHeader({ sidebarOpen, setSidebarOpen }) {
 
       {/* Right: Admin profile */}
       <div className="flex items-center gap-4">
-        <button className="flex items-center gap-2 p-2 rounded hover:bg-gray-100">
+        <button 
+        onClick={()=>router.push("/admin/profile")}
+        className="flex items-center gap-1 p-2 rounded ">
           <FaRegUserCircle size={22} className="text-gray-600" />
           <span className="hidden sm:block text-gray-700 font-medium">
             Admin

@@ -39,7 +39,7 @@ const sidebarMenu = [
     title: "Users Profile",
     icon: FaRegUserCircle,
     dropdown: false,
-    href: "/admin/users",
+    href: "/admin/profile",
   },
 ];
 
@@ -114,6 +114,7 @@ export default function AdminSidebar({ sidebarOpen }) {
           </li>
         ))}
       </ul>
+      
     </aside>
   );
 }

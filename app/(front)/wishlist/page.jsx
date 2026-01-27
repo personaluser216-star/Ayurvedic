@@ -40,29 +40,54 @@ const Wishlist = () => {
 
     window.dispatchEvent(new Event("wishlistUpdated"));
   };
-const addToCart = (id) => {
-  const cart = getShoppingCart();
+const addToCart = (product) => {
+  const cart = [...getShoppingCart()];
+  const selectedVariant = product.variants?.[0];
 
-  if (cart.includes(id)) {
-    toast.success("Product already in cart 🛒");
+  if (!selectedVariant) {
+    toast.error("Variant not available");
     return;
   }
 
-  // ✅ Add to cart
-  const updatedCart = [...cart,id];
-  setShoppingCart(updatedCart);
+  const existingIndex = cart.findIndex(
+    (item) =>
+      item.productId === product._id &&
+      item.variant.weight === selectedVariant.weight &&
+      item.variant.unit === selectedVariant.unit
+  );
 
-  // ✅ Remove from wishlist
-  const updatedFav = favIds.filter((i) => i !== id);
+  if (existingIndex !== -1) {
+    cart[existingIndex].quantity += 1;
+  } else {
+    cart.push({
+      productId: product._id,
+      name: product.name,
+      images: product.images,
+      variant: {
+        _id: selectedVariant._id,
+        weight: selectedVariant.weight,
+        unit: selectedVariant.unit,
+        price: selectedVariant.price,
+      },
+      quantity: 1,
+    });
+  }
+
+  // ✅ CART UPDATE
+  setShoppingCart(cart);
+
+  // ✅ WISHLIST UPDATE
+  const updatedFav = favIds.filter((i) => i !== product._id);
   setFavIds(updatedFav);
   setFavorites(updatedFav);
 
-  // 🔔 Header / badge update
+  // 🔥 THIS WAS MISSING
   window.dispatchEvent(new Event("wishlistUpdated"));
-  window.dispatchEvent(new Event("cartUpdated"));
 
   toast.success("Product added to cart 🛒");
 };
+
+
 
   return (
     <>
@@ -120,7 +145,7 @@ const addToCart = (id) => {
                   ₹{product.variants?.[0]?.price}
                 </p>
                 <button
-  onClick={() => addToCart(product._id)}
+  onClick={() => addToCart(product)}
   className="rounded-md mt-3 p-2 w-full logo-text text-white bg-green-600 hover:bg-green-700 transition"
 >
   Add To Cart
