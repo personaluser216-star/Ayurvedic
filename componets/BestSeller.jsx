@@ -46,7 +46,7 @@ const BestSeller = () => {
     setFavoritesState(updated);
     setFavorites(updated);
 
-    // 🔔 notify wishlist icon
+    
     window.dispatchEvent(new Event("wishlistUpdated"));
   };
 
