@@ -101,7 +101,7 @@ const ShowProductSlider = () => {
 
     setShoppingCart(updatedCart);
 
-    // 🔔 notify cart icon
+    
     window.dispatchEvent(new Event("shoppingcartupdate"));
   };
 
