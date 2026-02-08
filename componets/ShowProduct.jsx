@@ -49,7 +49,7 @@ const ShowProductSlider = () => {
       setFavoritesState(updated);
       setFavorites(updated);
   
-      // 🔔 notify header badge
+      
       window.dispatchEvent(new Event("wishlistUpdated"));
     };
 

@@ -14,12 +14,12 @@ const BestSeller = () => {
   const [products, setProducts] = useState([]);
   const [favorites, setFavoritesState] = useState([]);
 
-  // ===== LOAD WISHLIST =====
+  
   useEffect(() => {
     setFavoritesState(getFavorites() || []);
   }, []);
 
-  // ===== LOAD PRODUCTS =====
+  
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/product`)
       .then((res) => res.json())
@@ -27,7 +27,7 @@ const BestSeller = () => {
       .catch(console.error);
   }, []);
 
-  // ===== TOGGLE WISHLIST =====
+  
   const toggleFav = (id) => {
     let updated;
 

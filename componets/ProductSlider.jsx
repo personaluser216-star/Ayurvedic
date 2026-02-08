@@ -43,7 +43,7 @@ const ProductSlider = () => {
   return (
     <div className="relative md:px-12 px-6 md:pl-24 md:pr-24 md:mt-12 mt-6 mb-16">
         <h2 className="text-2xl font-semibold mb-10 ">Related Product</h2>
-      {/* LEFT ARROW */}
+      
       <button
         ref={prevRef}
         className="absolute md:left-8 md:top-1/2 left-64 top-3 translate-y-1/2 z-10
@@ -54,7 +54,7 @@ const ProductSlider = () => {
         <IoChevronBack size={24} />
       </button>
 
-      {/* RIGHT ARROW */}
+      
       <button
         ref={nextRef}
         className="absolute md:right-8 md:top-1/2  right-4 top-11 -translate-y-1/2 z-10
