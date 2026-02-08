@@ -50,7 +50,7 @@ const BestSeller = () => {
     window.dispatchEvent(new Event("wishlistUpdated"));
   };
 
-  // ===== ADD TO CART =====
+  
   const addToCart = (product) => {
     const cart = getShoppingCart() || [];
 

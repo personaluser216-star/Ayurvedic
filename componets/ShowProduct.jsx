@@ -65,7 +65,7 @@ const ShowProductSlider = () => {
     if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  // ===== ADD TO CART (FULL PRODUCT) =====
+  
   const addToCart = (product) => {
     const cart = getShoppingCart() || [];
 
