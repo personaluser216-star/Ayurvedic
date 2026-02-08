@@ -245,19 +245,19 @@ formData.append("variants", JSON.stringify(formattedVariants));
           </div>
         </div>
 
-<<<<<<< HEAD
+
     <div className="flex gap-2">
           <button
-=======
-        <button
->>>>>>> f4947cc6c0ca899ce862d30ab4ee428e526bbd66
+
+        
+
           onClick={handleUpdate}
           disabled={loading}
           className="bg-black  uppercase text-white mt-6 px-6 py-2 rounded"
         >
           {loading ? "Updating..." : "Update Product"}
         </button>
-<<<<<<< HEAD
+
         <button 
     
         onClick={() =>
@@ -265,8 +265,6 @@ formData.append("variants", JSON.stringify(formattedVariants));
               }
         className="bg-gray-300   uppercase text-black mt-6 px-6 py-2 rounded">Cancel</button>
     </div>
-=======
->>>>>>> f4947cc6c0ca899ce862d30ab4ee428e526bbd66
       </div>
     </div>
   );

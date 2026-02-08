@@ -53,7 +53,7 @@ export default function ProfileForm() {
 
   if (loading) return <p>Loading profile...</p>;
 
-<<<<<<< HEAD
+
 return (
   <div className="border p-6 rounded-md border-gray-300 bg-white">
     <p className="font-bold text-xl mb-4">Profile</p>
@@ -128,7 +128,7 @@ return (
           </div>
         </div>
 
-        {/* ================= PERSONAL INFO ================= */}
+       
         <div className="bg-white border border-gray-300 mt-6 rounded-lg p-6">
           <p className="font-semibold uppercase mb-4">
             Personal Information
@@ -196,7 +196,7 @@ return (
     )}
   </div>
 );
-=======
+
   return (
    <div className="border p-6 rounded-md border-gray-300 bg-white">
     <div className=" bg-white">
@@ -292,5 +292,5 @@ return (
     </div>
    </div>
   );
->>>>>>> f4947cc6c0ca899ce862d30ab4ee428e526bbd66
+
 }
