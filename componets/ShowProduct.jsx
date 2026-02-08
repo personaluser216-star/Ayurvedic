@@ -7,7 +7,10 @@ import { FaHeart, FaRegHeart, FaEye } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { getFavorites, setFavorites } from "@/utils/wishlist";
 import { toast } from "react-toastify";
+<<<<<<< HEAD
 import { getShoppingCart, setShoppingCart } from "@/utils/shoppingcart";
+=======
+>>>>>>> f4947cc6c0ca899ce862d30ab4ee428e526bbd66
 
 const ITEMS_PER_PAGE = 10;
 
@@ -61,6 +64,7 @@ const ShowProductSlider = () => {
     const section = document.getElementById("latest-products");
     if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+<<<<<<< HEAD
   // ===== ADD TO CART (FULL PRODUCT) =====
   const addToCart = (product) => {
     const cart = getShoppingCart() || [];
@@ -100,6 +104,9 @@ const ShowProductSlider = () => {
     // 🔔 notify cart icon
     window.dispatchEvent(new Event("shoppingcartupdate"));
   };
+=======
+
+>>>>>>> f4947cc6c0ca899ce862d30ab4ee428e526bbd66
 
 
   return (
@@ -130,8 +137,12 @@ const ShowProductSlider = () => {
               </button>
 
               <button
+<<<<<<< HEAD
                onClick={() => addToCart(product)}
                 
+=======
+                onClick={() => console.log("Add to cart", product._id)}
+>>>>>>> f4947cc6c0ca899ce862d30ab4ee428e526bbd66
                 className="bg-white p-2 rounded-full shadow hover:scale-110 transition"
               >
                 <IoCart className="text-gray-500 text-lg" />

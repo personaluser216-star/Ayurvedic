@@ -15,7 +15,10 @@
     "@mui/x-data-grid": "^8.23.0",
     "cloudinary": "^2.8.0",
     "framer-motion": "^12.26.2",
+<<<<<<< HEAD
     "install": "^0.13.0",
+=======
+>>>>>>> f4947cc6c0ca899ce862d30ab4ee428e526bbd66
     "lucide-react": "^0.562.0",
     "mongoose": "^9.0.2",
     "next": "16.1.1",
