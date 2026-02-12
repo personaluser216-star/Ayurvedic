@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { clearShoppingCart, getShoppingCart } from "@/utils/shoppingcart";
 import CheckoutSteps from "@/componets/checkoutstep";
+import { toast } from "react-toastify";
 
 const CheckoutPage = () => {
   const [cartProducts, setCartProducts] = useState([]);
@@ -39,7 +40,7 @@ const CheckoutPage = () => {
     if (loading) return;
 
     if (!firstName || !phone || !address) {
-      alert("Please fill billing details");
+      toast.error("Please fill billing details");
       return;
     }
 
@@ -57,7 +58,7 @@ const CheckoutPage = () => {
         pincode,
       },
       items: cartProducts.map((item) => ({
-        productId: item.productId,
+        productId: item._id || item.productId,
         name: item.name,
         price: item.variant.price,
         quantity: item.quantity,
@@ -80,9 +81,9 @@ const CheckoutPage = () => {
 
         if (data.success) {
           clearShoppingCart();
-          alert("COD Order placed successfully");
+          toast.success("COD Order placed successfully");
         } else {
-          alert(data.error || "Order failed");
+          toast.error(data.error || "Order failed");
         }
          await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sendwhatspp`, {
     method: "POST",
@@ -97,7 +98,7 @@ const CheckoutPage = () => {
       } catch (err) {
         console.error(err);
         setLoading(false);
-        alert("Something went wrong");
+        toast.error("Something went wrong");
       }
       return;
     }
@@ -117,12 +118,12 @@ const CheckoutPage = () => {
         if (data.success && data.url) {
           window.location.href = data.url; // 🔥 Stripe Checkout
         } else {
-          alert("Stripe payment failed");
+          toast.error("Stripe payment failed");
         }
       } catch (err) {
         console.error(err);
         setLoading(false);
-        alert("Payment error");
+        toast.error("Payment error");
       }
     }
   };
