@@ -17,31 +17,44 @@ const CheckoutPage = () => {
   const [state, setState] = useState("");
   const [pincode, setPincode] = useState("");
 
-  // PAYMENT STATES
-  const [paymentMethod, setPaymentMethod] = useState("cod"); // cod | online
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [onlineMethod, setOnlineMethod] = useState("stripe");
   const [loading, setLoading] = useState(false);
-const router = useRouter();
 
-  // LOAD CART
+  const router = useRouter();
+
+  // ✅ LOAD + CLEAN CART (Production Safe)
   useEffect(() => {
-    const cart = getShoppingCart();
-    setCartProducts(cart);
+    const cart = getShoppingCart() || [];
+
+    const cleanedCart = cart.filter(
+      (item) =>
+        item &&
+        item.productId &&
+        item.variant &&
+        item.variant.price
+    );
+
+    setCartProducts(cleanedCart);
   }, []);
 
+  // ✅ SAFE TOTAL CALCULATION
   const total = cartProducts.reduce((sum, item) => {
-  const price = item?.variant?.price || 0;
-  const qty = item?.quantity || 0;
-  return sum + price * qty;
-}, 0);
+    const price = item?.variant?.price || 0;
+    const qty = item?.quantity || 0;
+    return sum + price * qty;
+  }, 0);
 
-
-  // PLACE ORDER
   const placeOrder = async () => {
     if (loading) return;
 
     if (!firstName || !phone || !address) {
       toast.error("Please fill billing details");
+      return;
+    }
+
+    if (!cartProducts.length) {
+      toast.error("Cart is empty");
       return;
     }
 
@@ -59,19 +72,19 @@ const router = useRouter();
         pincode,
       },
       items: cartProducts.map((item) => ({
-        productId: item._id || item.productId,
-        name: item.name,
-        price: item.variant.price,
-        quantity: item.quantity,
+        productId: item.productId || item._id,
+        name: item?.name || "",
+        price: item?.variant?.price || 0,
+        quantity: item?.quantity || 1,
       })),
       totalAmount: total,
       paymentMethod,
     };
 
-    // ✅ COD FLOW
+    // ================= COD FLOW =================
     if (paymentMethod === "cod") {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/order`, {
+        const res = await fetch("/api/order", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(orderPayload),
@@ -82,23 +95,28 @@ const router = useRouter();
 
         if (data.success) {
           clearShoppingCart();
-          toast.success("COD Order placed successfully");
-           setTimeout(() => {
-    router.push("/");
-  }, 1500);
+          toast.success("COD Order placed successfully 🎉");
+
+          // ✅ Send WhatsApp only if order success
+          if (data?.order?._id) {
+            await fetch("/api/sendwhatspp", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                phone,
+                firstName,
+                orderId: data.order._id,
+                total,
+              }),
+            });
+          }
+
+          setTimeout(() => {
+            router.replace("/");
+          }, 1500);
         } else {
           toast.error(data.error || "Order failed");
         }
-         await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sendwhatspp`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      phone,          // customer phone
-      firstName,      // customer name
-      orderId: data.order._id,
-      total,          // order total amount
-    }),
-  });
       } catch (err) {
         console.error(err);
         setLoading(false);
@@ -107,10 +125,10 @@ const router = useRouter();
       return;
     }
 
-    // ✅ STRIPE ONLINE FLOW
+    // ================= STRIPE FLOW =================
     if (paymentMethod === "online" && onlineMethod === "stripe") {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/order/stripe`, {
+        const res = await fetch("/api/order/stripe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(orderPayload),
@@ -120,7 +138,7 @@ const router = useRouter();
         setLoading(false);
 
         if (data.success && data.url) {
-          window.location.href = data.url; // 🔥 Stripe Checkout
+          window.location.href = data.url;
         } else {
           toast.error("Stripe payment failed");
         }
@@ -143,54 +161,14 @@ const router = useRouter();
             <h2 className="text-xl font-semibold mb-6">Billing Details</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="border p-3"
-                placeholder="First Name"
-              />
-              <input
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                className="border p-3"
-                placeholder="Last Name"
-              />
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="border p-3 md:col-span-2"
-                placeholder="Email"
-              />
-              <input
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="border p-3"
-                placeholder="Phone"
-              />
-              <input
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="border p-3"
-                placeholder="Address"
-              />
-              <input
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="border p-3"
-                placeholder="City"
-              />
-              <input
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-                className="border p-3"
-                placeholder="State"
-              />
-              <input
-                value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
-                className="border p-3"
-                placeholder="Pincode"
-              />
+              <input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="border p-3" placeholder="First Name" />
+              <input value={lastName} onChange={(e) => setLastName(e.target.value)} className="border p-3" placeholder="Last Name" />
+              <input value={email} onChange={(e) => setEmail(e.target.value)} className="border p-3 md:col-span-2" placeholder="Email" />
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} className="border p-3" placeholder="Phone" />
+              <input value={address} onChange={(e) => setAddress(e.target.value)} className="border p-3" placeholder="Address" />
+              <input value={city} onChange={(e) => setCity(e.target.value)} className="border p-3" placeholder="City" />
+              <input value={state} onChange={(e) => setState(e.target.value)} className="border p-3" placeholder="State" />
+              <input value={pincode} onChange={(e) => setPincode(e.target.value)} className="border p-3" placeholder="Pincode" />
             </div>
           </div>
         </div>
@@ -202,11 +180,14 @@ const router = useRouter();
           {cartProducts.map((item, index) => (
             <div key={index} className="flex justify-between mb-2 text-sm">
               <span>
-                {item.name} ({item.variant.weight}
-                {item.variant.unit}) × {item.quantity}
+                {item?.name} (
+                {item?.variant?.weight || ""}
+                {item?.variant?.unit || ""}
+                ) × {item?.quantity || 0}
               </span>
-              <span>₹{(item?.variant?.price || 0) * (item?.quantity || 0)}
-</span>
+              <span>
+                ₹{(item?.variant?.price || 0) * (item?.quantity || 0)}
+              </span>
             </div>
           ))}
 
@@ -222,31 +203,19 @@ const router = useRouter();
             <h3 className="font-semibold mb-2">Payment Method</h3>
 
             <label className="flex gap-2">
-              <input
-                type="radio"
-                checked={paymentMethod === "cod"}
-                onChange={() => setPaymentMethod("cod")}
-              />
+              <input type="radio" checked={paymentMethod === "cod"} onChange={() => setPaymentMethod("cod")} />
               Cash on Delivery
             </label>
 
             <label className="flex gap-2 mt-2">
-              <input
-                type="radio"
-                checked={paymentMethod === "online"}
-                onChange={() => setPaymentMethod("online")}
-              />
+              <input type="radio" checked={paymentMethod === "online"} onChange={() => setPaymentMethod("online")} />
               Online Payment
             </label>
 
             {paymentMethod === "online" && (
               <div className="ml-5 mt-2">
                 <label className="flex gap-2">
-                  <input
-                    type="radio"
-                    checked={onlineMethod === "stripe"}
-                    onChange={() => setOnlineMethod("stripe")}
-                  />
+                  <input type="radio" checked={onlineMethod === "stripe"} onChange={() => setOnlineMethod("stripe")} />
                   Stripe
                 </label>
               </div>
