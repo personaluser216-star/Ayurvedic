@@ -8,6 +8,7 @@ import ProductSlider from "@/componets/ProductSlider";
 import { getFavorites, setFavorites } from "@/utils/wishlist";
 import { toast } from "react-toastify";
 import { getShoppingCart, setShoppingCart } from "@/utils/shoppingcart";
+import { useRouter } from "next/navigation";
 
 
 
@@ -20,6 +21,8 @@ const ProductDetail = () => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [quantity, setQuantity] = useState(1);
 const [favorites, setFavoritesState] = useState([]);
+const router = useRouter();
+
 
 useEffect(() => {
   setFavoritesState(getFavorites());
@@ -111,6 +114,38 @@ const addToCart = () => {
   });
 
   window.dispatchEvent(new Event("shoppingcartupdate"));
+};
+
+const buyNow = () => {
+  const cart = getShoppingCart();
+
+  const existingIndex = cart.findIndex(
+    (item) =>
+      item.productId === product._id &&
+      item.variant.weight === selectedVariant.weight &&
+      item.variant.unit === selectedVariant.unit
+  );
+
+  if (existingIndex !== -1) {
+    cart[existingIndex].quantity += quantity;
+  } else {
+    cart.push({
+      productId: product._id,
+      name: product.name,
+      images: product.images,
+      variant: {
+        _id: selectedVariant._id,
+        weight: selectedVariant.weight,
+        unit: selectedVariant.unit,
+        price: selectedVariant.price,
+      },
+      quantity,
+    });
+  }
+
+  setShoppingCart(cart);
+
+  router.push("/checkout");
 };
 
 
@@ -235,6 +270,7 @@ const addToCart = () => {
 
   <button
     className="flex-1 border bg-black text-white py-3 font-semibold hover:border hover:text-black hover:bg-white transition"
+    onClick={buyNow}
   >
     Buy Now
   </button>

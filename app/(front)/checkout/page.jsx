@@ -4,11 +4,10 @@ import React, { useEffect, useState } from "react";
 import { clearShoppingCart, getShoppingCart } from "@/utils/shoppingcart";
 import CheckoutSteps from "@/componets/checkoutstep";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const CheckoutPage = () => {
   const [cartProducts, setCartProducts] = useState([]);
-
-  // CUSTOMER STATES
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,6 +21,7 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("cod"); // cod | online
   const [onlineMethod, setOnlineMethod] = useState("stripe");
   const [loading, setLoading] = useState(false);
+const router = useRouter();
 
   // LOAD CART
   useEffect(() => {
@@ -82,6 +82,9 @@ const CheckoutPage = () => {
         if (data.success) {
           clearShoppingCart();
           toast.success("COD Order placed successfully");
+           setTimeout(() => {
+    router.push("/");
+  }, 1500);
         } else {
           toast.error(data.error || "Order failed");
         }

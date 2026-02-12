@@ -67,15 +67,43 @@ const Page = () => {
      // 🔔 notify header badge
      window.dispatchEvent(new Event("wishlistUpdated"));
    };
- const addToCart = (id) => {
-  const cart = getShoppingCart();
+  const addToCart = (product) => {
+    const cart = getShoppingCart() || [];
 
-  // ❌ already cart ma che to add na thay
-  if (cart.includes(id)) return;
+    const existingIndex = cart.findIndex(
+      (item) => item._id === product._id
+    );
 
-  const updatedCart = [...cart, id];
-  setShoppingCart(updatedCart);
-};
+    let updatedCart;
+
+    if (existingIndex !== -1) {
+      // 🔁 increase quantity
+      updatedCart = [...cart];
+      updatedCart[existingIndex].quantity += 1;
+
+      toast.success("Product quantity updated", {
+        position: "top-center",
+      });
+    } else {
+      // ➕ add new product
+      updatedCart = [
+        ...cart,
+        {
+          ...product,
+          variant: product.variants?.[0], // REQUIRED by cart page
+          quantity: 1,
+        },
+      ];
+
+      toast.success("Product added to cart", {
+        position: "top-center",
+      });
+    }
+
+    setShoppingCart(updatedCart);
+    window.dispatchEvent(new Event("shoppingcartupdate"));
+  };
+
 
   return (
     <div>
@@ -107,7 +135,7 @@ const Page = () => {
                 )}
               </button>
               <button
-                onClick={() => addToCart(product._id)}
+                onClick={() => addToCart(product)}
                 className="bg-white p-2 rounded-full shadow hover:scale-110 transition"
               >
                 <IoCart className="text-gray-500 text-lg" />
