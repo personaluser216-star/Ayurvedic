@@ -29,11 +29,12 @@ const router = useRouter();
     setCartProducts(cart);
   }, []);
 
-  // TOTAL
-  const total = cartProducts.reduce(
-    (sum, item) => sum + item.variant.price * item.quantity,
-    0
-  );
+  const total = cartProducts.reduce((sum, item) => {
+  const price = item?.variant?.price || 0;
+  const qty = item?.quantity || 0;
+  return sum + price * qty;
+}, 0);
+
 
   // PLACE ORDER
   const placeOrder = async () => {
@@ -204,7 +205,8 @@ const router = useRouter();
                 {item.name} ({item.variant.weight}
                 {item.variant.unit}) × {item.quantity}
               </span>
-              <span>₹{item.variant.price * item.quantity}</span>
+              <span>₹{(item?.variant?.price || 0) * (item?.quantity || 0)}
+</span>
             </div>
           ))}
 
