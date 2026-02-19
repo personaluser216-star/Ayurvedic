@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 
 const cardData = [
@@ -35,9 +36,13 @@ const Poster = () => {
           {/* Overlay text + button */}
           <div className="absolute top-16 left-2  p-4 ">
             <h3 className="text-black font-semibold text-xl">{card.title}</h3>
-            <button className="mt-2 logo-text rounded-lg text-white px-4 py-2  shadow hover:bg-green-700 transition">
-              Show Now
-            </button>
+            <Link
+  href="/product"
+  className="mt-2 inline-block logo-text text-white rounded-lg px-4 py-2 shadow hover:bg-green-700 transition"
+>
+  Shop Now
+</Link>
+
           </div>
         </div>
       ))}

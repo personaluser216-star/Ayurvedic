@@ -106,9 +106,13 @@ const BestSeller = () => {
                 KABJ NASHAK CHURAN
               </h3>
 
-              <button className="mt-2 logo-text text-white rounded-lg px-4 py-2 shadow hover:bg-green-700 transition">
-                Shop Now
-              </button>
+            <Link
+  href="/product"
+  className="mt-2 inline-block logo-text text-white rounded-lg px-4 py-2 shadow hover:bg-green-700 transition"
+>
+  Shop Now
+</Link>
+
             </div>
           </div>
         </div>
