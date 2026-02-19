@@ -89,6 +89,7 @@ const ShowProductSlider = () => {
         ...cart,
         {
           ...product,
+          productId: product._id,   
           variant: product.variants?.[0], // REQUIRED by cart page
           quantity: 1,
         },

@@ -30,7 +30,7 @@ const CheckoutPage = () => {
     const cleanedCart = cart.filter(
       (item) =>
         item &&
-        item.productId &&
+        (item.productId || item._id) &&
         item.variant &&
         item.variant.price
     );
