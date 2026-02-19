@@ -74,47 +74,42 @@ const decreaseQty = () => {
     setQuantity((prev) => prev - 1);
   }
 };
-const addToCart = () => {
-  const cart = getShoppingCart();
+ const addToCart = (product) => {
+    const cart = getShoppingCart() || [];
 
-  const existingIndex = cart.findIndex(
-    (item) =>
-      item.productId === product._id &&
-      item.variant.weight === selectedVariant.weight &&
-      item.variant.unit === selectedVariant.unit
-  );
+    const existingIndex = cart.findIndex(
+      (item) => item._id === product._id
+    );
 
-  if (existingIndex !== -1) {
-    // ✅ Same product + same variant → increase qty
-    cart[existingIndex].quantity += quantity;
-  } else {
-    // ✅ New product OR new variant
-    cart.push({
-      productId: product._id,
+    let updatedCart;
 
-      // 🔥 REQUIRED FOR CART PAGE UI
-      name: product.name,
-      images: product.images, // ✅ IMAGE WILL SHOW NOW
+    if (existingIndex !== -1) {
+      // 🔁 increase quantity
+      updatedCart = [...cart];
+      updatedCart[existingIndex].quantity += 1;
 
-      variant: {
-        _id: selectedVariant._id,
-        weight: selectedVariant.weight,
-        unit: selectedVariant.unit,
-        price: selectedVariant.price,
-      },
+      toast.success("Product quantity updated", {
+        position: "top-center",
+      });
+    } else {
+      // ➕ add new product
+      updatedCart = [
+        ...cart,
+        {
+          ...product,
+          variant: product.variants?.[0], // REQUIRED by cart page
+          quantity: 1,
+        },
+      ];
 
-      quantity,
-    });
-  }
+      toast.success("Product added to cart", {
+        position: "top-center",
+      });
+    }
 
-  setShoppingCart(cart);
-
-  toast.success("Product added to cart 🛒", {
-    position: "top-center",
-  });
-
-  window.dispatchEvent(new Event("shoppingcartupdate"));
-};
+    setShoppingCart(updatedCart);
+    window.dispatchEvent(new Event("shoppingcartupdate"));
+  };
 
 const buyNow = () => {
   const cart = getShoppingCart();
@@ -262,7 +257,7 @@ const buyNow = () => {
   <button
     className="flex-1 logo-text text-white py-3  font-semibold hover:bg-green-700 transition"
    
-   onClick={addToCart}
+  onClick={() => addToCart(product)}
 
   >
     Add to Cart
