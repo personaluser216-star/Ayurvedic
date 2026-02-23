@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^7.3.6",
     "@mui/x-data-grid": "^8.23.0",
+    "axios": "^1.13.5",
     "cloudinary": "^2.8.0",
     "framer-motion": "^12.26.2",
     "install": "^0.13.0",
