@@ -98,22 +98,7 @@ const CheckoutPage = () => {
           toast.success("COD Order placed successfully 🎉");
 
           // ✅ Send WhatsApp only if order success
-          if (data?.order?._id) {
-            await fetch("/api/sendwhatspp", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                phone,
-                firstName,
-                orderId: data.order._id,
-                total,
-              }),
-            });
-          }
-
-          setTimeout(() => {
-            router.replace("/");
-          }, 1500);
+         
         } else {
           toast.error(data.error || "Order failed");
         }
