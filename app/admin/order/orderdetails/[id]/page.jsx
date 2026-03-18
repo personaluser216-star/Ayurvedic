@@ -42,6 +42,7 @@ const OrderDetailsPage = () => {
       if (res.data.success) {
         toast.success("Order status updated");
         setStatus(newStatus);
+       
       }
     } catch (error) {
       toast.error("Failed to update status");

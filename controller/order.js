@@ -136,4 +136,44 @@ export async function getOrderById(id) {
       { status: 500 }
     );
   }
-}
+};
+export const updateOrderStatus = async (id, body) => {
+  try {
+    const { orderStatus } = body;
+
+    const validStatus = ["placed", "packing", "shipped", "out_for_delivery", "delivered", "cancelled"];
+
+    if (!validStatus.includes(orderStatus)) {
+      return NextResponse.json(
+        { success: false, error: "Invalid status" },
+        { status: 400 }
+      );
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      id,
+      { orderStatus },
+      { new: true }
+    );
+
+    if (!order) {
+      return NextResponse.json(
+        { success: false, error: "Order not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Status updated successfully",
+      data: order,
+    });
+
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { success: false, error: "Server error" },
+      { status: 500 }
+    );
+  }
+};

@@ -37,8 +37,8 @@ export default function TrackOrderPage() {
   if (error) return <p className="text-center text-red-500 mt-10">{error}</p>;
   if (!order?._id) return <p className="text-center mt-10">Order not found!</p>;
 
-  const steps = ["placed", "processing", "shipped", "delivered"];
-  const currentStepIndex = steps.indexOf(order.orderStatus);
+ const steps = ["placed", "packing", "shipped", "out_for_delivery", "delivered"];
+const currentStepIndex = steps.indexOf(order.orderStatus);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -96,7 +96,7 @@ export default function TrackOrderPage() {
               )}
               <span>{item.name} × {item.quantity}</span>
             </div>
-            <span>₹{item.price}</span>
+            <span>₹{item.price * item.quantity}</span>
           </div>
         ))}
       </div>
