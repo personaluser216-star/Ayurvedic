@@ -22,6 +22,7 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+  
 
   // ✅ LOAD + CLEAN CART (Production Safe)
   useEffect(() => {
@@ -97,7 +98,7 @@ const CheckoutPage = () => {
           clearShoppingCart();
           toast.success("COD Order placed successfully 🎉");
 
-          // ✅ Send WhatsApp only if order success
+          router.push("/");
          
         } else {
           toast.error(data.error || "Order failed");

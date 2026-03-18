@@ -1,15 +1,14 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/componets/Navbar";
-import Footer from "@/componets/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ScrollToTop from "@/componets/ScrollToTop";
+import ClientLayout from "@/componets/clientlayout";
 
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable:"--font-poppins",
+  variable: "--font-poppins",
   display: "swap",
 });
 
@@ -22,21 +21,18 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${poppins.variable} font-poppins antialiased`}>
+        
         <ToastContainer
           position="top-right"
           autoClose={1500}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          pauseOnHover
-          draggable
-          theme="light"
         />
-         <Navbar/>
-        {children}
-       
-        <Footer />
-        <ScrollToTop/>
+
+        {/* 🔥 IMPORTANT CHANGE */}
+        <ClientLayout>
+          {children}
+        </ClientLayout>
+
+        <ScrollToTop />
       </body>
     </html>
   );
