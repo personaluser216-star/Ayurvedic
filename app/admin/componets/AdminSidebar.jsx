@@ -33,6 +33,12 @@ const sidebarMenu = [
      items: [
 
       { label: "All Order", href: "/admin/order/allorder" },
+      { label: "Order Placed", href: "/admin/order/placed" },
+      { label: "Packing", href: "/admin/order/packing" },
+      { label: "Shipped", href: "/admin/order/shipped" },
+      { label: "Out for delivery", href: "/admin/order/out-for-delivery" },
+      { label: "Delivered", href: "/admin/order/delivered" },
+      { label: "Cancelled", href: "/admin/order/cancelled" },
     ],
   },
   {
@@ -88,18 +94,22 @@ export default function AdminSidebar({ sidebarOpen }) {
 
                 {/* Dropdown only when sidebar open */}
                 {sidebarOpen && openMenu === menu.title && (
-                  <ul className="ml-8 mt-1 space-y-1 text-gray-600">
-                    {menu.items.map((item) => (
-                      <li key={item.label}>
-                        <Link
-                          href={item.href}
-                          className="block p-2 hover:bg-gray-100 rounded"
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                 <ul className="ml-6 mt-1 space-y-1 text-gray-600">
+  {menu.items.map((item) => (
+    <li key={item.label} className="flex items-center gap-2">
+      {/* Dot */}
+      <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></span>
+
+      {/* Link */}
+      <Link
+        href={item.href}
+        className="block p-2 hover:bg-gray-100 rounded flex-1"
+      >
+        {item.label}
+      </Link>
+    </li>
+  ))}
+</ul>
                 )}
               </>
             ) : (

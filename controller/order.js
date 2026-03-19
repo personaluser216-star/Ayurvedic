@@ -37,6 +37,9 @@ export const createOrder = async (req) => {
       paymentMethod: "cod",
       paymentStatus: "pending",
     });
+if (global.io) {
+  global.io.emit("new_order", order);
+}
 
     // ================= SEND EMAIL =================
     try {
