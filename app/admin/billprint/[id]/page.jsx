@@ -47,7 +47,7 @@ const BillPrintPage = () => {
           </p>
         </div>
 
-        {/* Items Table */}
+        
         <table className="w-full border-collapse border text-sm mb-4">
           <thead className="bg-gray-100">
             <tr>
