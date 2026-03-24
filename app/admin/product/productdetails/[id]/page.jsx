@@ -63,7 +63,7 @@ const ProductDetails = () => {
         </nav>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-sm">
+      <div className="bg-white p-6 -lg shadow-sm">
         <div className="grid grid-cols-1 ">
           {/* LEFT */}
           <div>
@@ -80,7 +80,7 @@ const ProductDetails = () => {
                 <img
                   key={i}
                   src={img}
-                  className="w-24 h-24 p-2 border object-cover rounded"
+                  className="w-24 h-24 p-2 border object-cover "
                 />
               ))}
             </div>
@@ -90,7 +90,7 @@ const ProductDetails = () => {
           <div className="pt-2">
             <p className="font-medium mb-2">Variants</p>
 
-           <div className="max-w-sm border border-gray-300 rounded overflow-hidden">
+           <div className="max-w-sm border border-gray-300  overflow-hidden">
   {/* Header */}
   <div className="grid grid-cols-2 bg-gray-100 p-3 font-semibold text-sm">
     <span>Weight</span>
@@ -120,7 +120,7 @@ const ProductDetails = () => {
               onClick={() =>
                 router.push(`/admin/product/editproduct/${id}`)
               }
-              className="mt-4 px-4 py-2 bg-black text-white rounded"
+              className="mt-4 px-4 py-2 bg-black text-white "
             >
               Edit Product
             </button>
@@ -128,7 +128,7 @@ const ProductDetails = () => {
               onClick={() =>
                 router.push('/admin/product/getproduct')
               }
-              className="mt-4 px-4 py-2 bg-gray-100 text-black rounded border"
+              className="mt-4 px-4 py-2 bg-gray-100 text-black  border"
             >
               Back To Product
             </button>

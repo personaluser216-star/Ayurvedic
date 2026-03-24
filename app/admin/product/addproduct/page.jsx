@@ -86,7 +86,7 @@ formData.append("variants", JSON.stringify(formattedVariants));
       </nav>
     </div>
 
-    <div className="bg-white p-6 rounded-lg shadow-sm">
+    <div className="bg-white p-6 -lg shadow-sm">
       {/* GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
@@ -96,7 +96,7 @@ formData.append("variants", JSON.stringify(formattedVariants));
           <div className="mb-4">
             <p className="mb-1 font-medium">Product Name</p>
             <input
-              className="border border-gray-300 p-2 rounded w-full"
+              className="border border-gray-300 p-2  w-full"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -106,7 +106,7 @@ formData.append("variants", JSON.stringify(formattedVariants));
           <div className="mb-4">
             <p className="mb-1 font-medium">Description</p>
             <textarea
-              className="border border-gray-300 p-2 rounded w-full"
+              className="border border-gray-300 p-2  w-full"
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -120,7 +120,7 @@ formData.append("variants", JSON.stringify(formattedVariants));
               {images.map((img, index) => (
                 <label
                   key={index}
-                  className="w-24 h-24 border-gray-300 border-2 border-dashed rounded flex items-center justify-center cursor-pointer"
+                  className="w-24 h-24 border-gray-300 border-2 border-dashed  flex items-center justify-center cursor-pointer"
                 >
                   {img ? (
                     <img
@@ -154,7 +154,7 @@ formData.append("variants", JSON.stringify(formattedVariants));
             <div
               key={i}
               className="
-  border border-gray-300 rounded p-3 mb-3
+  border border-gray-300  p-3 mb-3
   flex flex-col
   md:flex-row
   items-start md:items-center
@@ -165,7 +165,7 @@ formData.append("variants", JSON.stringify(formattedVariants));
               <input
                 type="number"
                 placeholder="Weight"
-                className="border p-2 border-gray-300 rounded w-24"
+                className="border p-2 border-gray-300  w-24"
                 value={v.weight}
                 onChange={(e) =>
                   handleVariantChange(i, "weight", e.target.value)
@@ -173,7 +173,7 @@ formData.append("variants", JSON.stringify(formattedVariants));
               />
 
               <select
-                className="border p-2 border-gray-300 rounded"
+                className="border p-2 border-gray-300 "
                 value={v.unit}
                 onChange={(e) =>
                   handleVariantChange(i, "unit", e.target.value)
@@ -192,7 +192,7 @@ formData.append("variants", JSON.stringify(formattedVariants));
               <input
                 type="number"
                 placeholder="Price"
-                className="border p-2 border-gray-300 rounded flex-1  text-left"
+                className="border p-2 border-gray-300  flex-1  text-left"
                 value={v.price}
                 onChange={(e) =>
                   handleVariantChange(i, "price", e.target.value)
@@ -215,7 +215,7 @@ formData.append("variants", JSON.stringify(formattedVariants));
       <button
         onClick={handleSubmit}
         disabled={loading}
-        className="bg-black uppercase text-white mt-6 px-6 py-2 rounded"
+        className="bg-black uppercase text-white mt-6 px-6 py-2 "
       >
         {loading ? "Adding..." : "Add Product"}
       </button>

@@ -62,7 +62,7 @@ export default function OrdersPage() {
 
     return (
       <span
-        className={`px-2 py-1 rounded text-sm font-medium
+        className={`px-2 py-1  text-sm font-medium
           ${
             status === "paid"
               ? "bg-green-100 text-green-700"

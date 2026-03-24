@@ -103,7 +103,7 @@ const BillPrintPage = () => {
         <div className="text-center mt-4 ">
           <button
             onClick={() => window.print()}
-            className="bg-black text-white px-6 py-2 rounded"
+            className="bg-black text-white px-6 py-2 "
           >
             Print Invoice
           </button>

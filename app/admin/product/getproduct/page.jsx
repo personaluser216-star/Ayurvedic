@@ -63,7 +63,7 @@ const GetProduct = () => {
         <img
           src={params.value}
           alt="product"
-          className="w-12 h-12 object-cover rounded"
+          className="w-12 h-12 object-cover "
         />
       ),
     },
@@ -134,7 +134,7 @@ const GetProduct = () => {
     <div className="md:p-6">
       <h1 className="text-xl font-semibold mb-4">All Products</h1>
 
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-white -lg shadow">
         <DataGrid
           rows={rows}
           columns={columns}
@@ -157,7 +157,7 @@ const GetProduct = () => {
       {/* 🔴 DELETE CONFIRM MODAL */}
       {deleteId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-lg p-6 w-[90%] max-w-sm shadow-lg">
+          <div className="bg-white -lg p-6 w-[90%] max-w-sm shadow-lg">
             <h2 className="text-lg font-semibold text-gray-800 mb-2">
               Delete Product
             </h2>
@@ -170,14 +170,14 @@ const GetProduct = () => {
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setDeleteId(null)}
-                className="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100"
+                className="px-4 py-2  border border-gray-300 text-gray-700 hover:bg-gray-100"
               >
                 Cancel
               </button>
 
               <button
                 onClick={confirmDelete}
-                className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+                className="px-4 py-2  bg-red-600 text-white hover:bg-red-700"
               >
                 Delete
               </button>

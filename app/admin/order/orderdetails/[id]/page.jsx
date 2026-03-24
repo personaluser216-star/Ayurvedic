@@ -57,7 +57,7 @@ const OrderDetailsPage = () => {
   if (!order) return <div className="text-center py-20">Order not found</div>;
 
   return (
-    <div className=" mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className=" mx-auto p-6 bg-white shadow-lg -lg">
       <h1 className="text-xl font-bold mb-6">Order Details</h1>
 
       {/* Top section: Order + Customer + Status */}
@@ -68,7 +68,7 @@ const OrderDetailsPage = () => {
           <p><span className="font-medium">Placed On:</span> {new Date(order.createdAt).toLocaleString()}</p>
           <p>
             <span className="font-medium">Status:</span>{" "}
-            <span className={`px-3 py-1 rounded text-sm font-medium ${statusColors[status] || "bg-gray-100 text-gray-800"}`}>
+            <span className={`px-3 py-1  text-sm font-medium ${statusColors[status] || "bg-gray-100 text-gray-800"}`}>
               {status.replaceAll("_", " ")}
             </span>
           </p>
@@ -87,7 +87,7 @@ const OrderDetailsPage = () => {
           <select
             value={status}
             onChange={(e) => updateStatus(e.target.value)}
-            className="border px-3 py-2 rounded w-full md:w-3/4"
+            className="border px-3 py-2  w-full md:w-3/4"
           >
             <option value="placed">Order Placed</option>
             <option value="packing">Packing</option>
@@ -100,7 +100,7 @@ const OrderDetailsPage = () => {
       </div>
 
       {/* Payment Info Card */}
-      <div className="mb-6 rounded-lg">
+      <div className="mb-6 -lg">
         <h2 className="text-lg font-semibold mb-4">Payment Info</h2>
         <div className="grid grid-cols-2 md:grid-cols-4  border p-2 border-gray-300">
           <div>
@@ -153,7 +153,7 @@ const OrderDetailsPage = () => {
             </tfoot>
           </table>
  <button
-  className="bg-black text-white p-2 rounded mt-5 w-36"
+  className="bg-black text-white p-2  mt-5 w-36"
   onClick={() => {
     sessionStorage.setItem("billOrder", JSON.stringify(order));
     router.push(`/admin/billprint/${id}`);
